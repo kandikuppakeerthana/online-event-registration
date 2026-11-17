@@ -13,7 +13,6 @@ app.secret_key = os.environ.get(
     "eventora-local-development-key"
 )
 
-
 # -----------------------------
 # INITIALIZE DATABASE
 # -----------------------------
