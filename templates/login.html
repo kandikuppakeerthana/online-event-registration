@@ -1,0 +1,160 @@
+{% extends "base.html" %}
+
+{% block title %}Login | Eventora{% endblock %}
+
+{% block content %}
+
+<section class="auth-page">
+
+    <div class="auth-container login-layout">
+
+        <div class="auth-info">
+
+            <span class="section-label">WELCOME BACK</span>
+
+            <h1>
+                Your events are
+                <span>waiting for you.</span>
+            </h1>
+
+            <p>
+                Login to discover upcoming events, manage your
+                registrations and reserve your next experience.
+            </p>
+
+            <div class="login-visual">
+
+                <div class="login-visual-icon">
+                    <i class="fa-solid fa-calendar-star"></i>
+                </div>
+
+                <div>
+                    <strong>Discover. Register. Experience.</strong>
+                    <small>
+                        Everything you need in one place.
+                    </small>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="auth-card">
+
+            <div class="auth-header">
+
+                <div class="auth-icon">
+                    <i class="fa-solid fa-arrow-right-to-bracket"></i>
+                </div>
+
+                <h2>Welcome back</h2>
+
+                <p>
+                    Login to your Eventora account
+                </p>
+
+            </div>
+
+
+            <form method="POST" class="auth-form">
+
+                <div class="form-group">
+
+                    <label for="email">
+                        Email Address
+                    </label>
+
+                    <div class="input-wrapper">
+
+                        <i class="fa-regular fa-envelope"></i>
+
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            placeholder="you@example.com"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="password">
+                        Password
+                    </label>
+
+                    <div class="input-wrapper">
+
+                        <i class="fa-solid fa-lock"></i>
+
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            placeholder="Enter your password"
+                            required
+                        >
+
+                        <button
+                            type="button"
+                            class="password-toggle"
+                            onclick="togglePassword('password', this)"
+                        >
+                            <i class="fa-regular fa-eye"></i>
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <button type="submit" class="auth-submit">
+
+                    Login
+
+                    <i class="fa-solid fa-arrow-right"></i>
+
+                </button>
+
+            </form>
+
+
+            <div class="demo-login">
+
+                <i class="fa-solid fa-circle-info"></i>
+
+                <div>
+
+                    <strong>Admin Demo</strong>
+
+                    <small>
+                        admin@gmail.com &nbsp;|&nbsp; admin123
+                    </small>
+
+                </div>
+
+            </div>
+
+
+            <div class="auth-footer">
+
+                Don't have an account?
+
+                <a href="{{ url_for('register') }}">
+                    Create Account
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}

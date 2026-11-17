@@ -1,0 +1,240 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard | EVENTORA{% endblock %}
+
+{% block content %}
+
+<section class="dashboard-section">
+
+    <div class="container">
+
+        <!-- Welcome Header -->
+        <div class="dashboard-header">
+
+            <div>
+                <span class="eyebrow">WELCOME BACK</span>
+
+                <h1>
+                    Hello, {{ session["user_name"] }} 👋
+                </h1>
+
+                <p>
+                    Manage your event registrations and discover
+                    experiences waiting for you.
+                </p>
+            </div>
+
+            <a href="{{ url_for('events') }}" class="btn btn-primary">
+                <i class="fa-solid fa-compass"></i>
+                Explore Events
+            </a>
+
+        </div>
+
+
+        <!-- Statistics -->
+        <div class="dashboard-stats">
+
+            <div class="dashboard-stat-card">
+
+                <div class="dashboard-stat-icon">
+                    <i class="fa-solid fa-ticket"></i>
+                </div>
+
+                <div>
+                    <span>Total Registrations</span>
+                    <strong>{{ total_registrations }}</strong>
+                </div>
+
+            </div>
+
+
+            <div class="dashboard-stat-card">
+
+                <div class="dashboard-stat-icon">
+                    <i class="fa-solid fa-calendar-days"></i>
+                </div>
+
+                <div>
+                    <span>Upcoming Events</span>
+                    <strong>{{ upcoming_events|length }}</strong>
+                </div>
+
+            </div>
+
+
+            <div class="dashboard-stat-card">
+
+                <div class="dashboard-stat-icon">
+                    <i class="fa-solid fa-arrow-trend-up"></i>
+                </div>
+
+                <div>
+                    <span>Account Status</span>
+                    <strong>Active</strong>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Upcoming Events -->
+        <div class="dashboard-section-header">
+
+            <div>
+                <span class="eyebrow">YOUR SCHEDULE</span>
+                <h2>Upcoming Events</h2>
+            </div>
+
+            <a href="{{ url_for('my_events') }}" class="text-link">
+                View All
+                <i class="fa-solid fa-arrow-right"></i>
+            </a>
+
+        </div>
+
+
+        {% if upcoming_events %}
+
+        <div class="dashboard-event-grid">
+
+            {% for event in upcoming_events %}
+
+            <article class="dashboard-event-card">
+
+                <div class="dashboard-event-top">
+
+                    <span class="event-category">
+                        <i class="fa-solid fa-layer-group"></i>
+                        {{ event["category"] }}
+                    </span>
+
+                    <i class="fa-solid fa-calendar-check event-check-icon"></i>
+
+                </div>
+
+
+                <h3>{{ event["title"] }}</h3>
+
+                <p>
+                    {{ event["description"][:100] }}
+                    {% if event["description"]|length > 100 %}
+                    ...
+                    {% endif %}
+                </p>
+
+
+                <div class="dashboard-event-info">
+
+                    <span>
+                        <i class="fa-regular fa-calendar"></i>
+                        {{ event["date"] }}
+                    </span>
+
+                    <span>
+                        <i class="fa-regular fa-clock"></i>
+                        {{ event["time"] }}
+                    </span>
+
+                    <span>
+                        <i class="fa-solid fa-location-dot"></i>
+                        {{ event["venue"] }}
+                    </span>
+
+                </div>
+
+
+                <a
+                    href="{{ url_for('event_details', event_id=event['id']) }}"
+                    class="dashboard-view-link"
+                >
+                    View Event
+                    <i class="fa-solid fa-arrow-right"></i>
+                </a>
+
+            </article>
+
+            {% endfor %}
+
+        </div>
+
+        {% else %}
+
+        <div class="dashboard-empty">
+
+            <div class="empty-icon">
+                <i class="fa-regular fa-calendar"></i>
+            </div>
+
+            <h3>No upcoming events</h3>
+
+            <p>
+                You haven't registered for any upcoming events yet.
+            </p>
+
+            <a href="{{ url_for('events') }}" class="btn btn-primary">
+                Explore Events
+            </a>
+
+        </div>
+
+        {% endif %}
+
+
+        <!-- Quick Actions -->
+        <div class="quick-actions">
+
+            <div class="quick-action-content">
+
+                <span class="eyebrow">QUICK ACTIONS</span>
+
+                <h2>What would you like to do?</h2>
+
+                <p>
+                    Manage your registrations or discover something new.
+                </p>
+
+            </div>
+
+
+            <div class="quick-action-buttons">
+
+                <a
+                    href="{{ url_for('events') }}"
+                    class="quick-action"
+                >
+                    <i class="fa-solid fa-calendar-plus"></i>
+
+                    <div>
+                        <strong>Browse Events</strong>
+                        <span>Find upcoming events</span>
+                    </div>
+
+                    <i class="fa-solid fa-arrow-right arrow"></i>
+                </a>
+
+
+                <a
+                    href="{{ url_for('my_events') }}"
+                    class="quick-action"
+                >
+                    <i class="fa-solid fa-ticket"></i>
+
+                    <div>
+                        <strong>My Registrations</strong>
+                        <span>Manage your events</span>
+                    </div>
+
+                    <i class="fa-solid fa-arrow-right arrow"></i>
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}

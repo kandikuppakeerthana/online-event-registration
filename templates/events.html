@@ -1,0 +1,143 @@
+{% extends "base.html" %}
+
+{% block title %}Discover Events | EVENTORA{% endblock %}
+
+{% block content %}
+
+<section class="page-hero">
+    <div class="container">
+        <span class="eyebrow">EXPLORE EVENTS</span>
+
+        <h1>Find your next experience</h1>
+
+        <p>
+            Discover workshops, bootcamps, summits and other exciting
+            events happening around you.
+        </p>
+    </div>
+</section>
+
+
+<section class="events-section">
+    <div class="container">
+
+        {% if events %}
+
+        <div class="events-grid">
+
+            {% for event in events %}
+
+            <article class="event-card">
+
+                <div class="event-card-top">
+
+                    <span class="event-category">
+                        <i class="fa-solid fa-layer-group"></i>
+                        {{ event["category"] }}
+                    </span>
+
+                    {% if event["available_seats"] < 20 %}
+                    <span class="event-status">
+                        <i class="fa-solid fa-fire"></i>
+                        Filling Fast
+                    </span>
+                    {% endif %}
+
+                </div>
+
+
+                <div class="event-date-box">
+
+                    <span class="event-month">
+                        {{ event["date"].split("-")[1] }}
+                    </span>
+
+                    <span class="event-day">
+                        {{ event["date"].split("-")[2] }}
+                    </span>
+
+                </div>
+
+
+                <div class="event-card-body">
+
+                    <h3>{{ event["title"] }}</h3>
+
+                    <p>
+                        {{ event["description"][:120] }}
+                        {% if event["description"]|length > 120 %}
+                        ...
+                        {% endif %}
+                    </p>
+
+
+                    <div class="event-info">
+
+                        <div>
+                            <i class="fa-regular fa-clock"></i>
+                            <span>{{ event["time"] }}</span>
+                        </div>
+
+                        <div>
+                            <i class="fa-solid fa-location-dot"></i>
+                            <span>{{ event["venue"] }}</span>
+                        </div>
+
+                    </div>
+
+
+                    <div class="event-card-footer">
+
+                        <div class="seats-info">
+
+                            <i class="fa-solid fa-users"></i>
+
+                            <span>
+                                {{ event["available_seats"] }}
+                                seats available
+                            </span>
+
+                        </div>
+
+
+                        <a
+                            href="{{ url_for('event_details', event_id=event['id']) }}"
+                            class="btn btn-primary btn-small"
+                        >
+                            View Details
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+            {% endfor %}
+
+        </div>
+
+        {% else %}
+
+        <div class="empty-state">
+
+            <div class="empty-icon">
+                <i class="fa-regular fa-calendar-xmark"></i>
+            </div>
+
+            <h3>No events available</h3>
+
+            <p>
+                There are currently no upcoming events.
+                Please check again later.
+            </p>
+
+        </div>
+
+        {% endif %}
+
+    </div>
+</section>
+
+{% endblock %}

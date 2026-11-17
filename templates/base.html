@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{% block title %}Eventora{% endblock %}</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+</head>
+
+<body>
+
+    <!-- NAVIGATION -->
+    <header class="navbar">
+        <div class="nav-container">
+
+            <a href="{{ url_for('index') }}" class="brand">
+                <span class="brand-icon">
+                    <i class="fa-solid fa-sparkles"></i>
+                </span>
+                EVENTORA
+            </a>
+
+            <button class="menu-toggle" onclick="toggleMenu()">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+
+            <nav class="nav-links" id="navLinks">
+
+                <a href="{{ url_for('index') }}">
+                    <i class="fa-solid fa-house"></i>
+                    Home
+                </a>
+
+                <a href="{{ url_for('events') }}">
+                    <i class="fa-solid fa-calendar-days"></i>
+                    Discover Events
+                </a>
+
+                {% if session.get('role') == 'admin' %}
+
+                    <a href="{{ url_for('admin') }}">
+                        <i class="fa-solid fa-shield-halved"></i>
+                        Admin
+                    </a>
+
+                    <a href="{{ url_for('logout') }}" class="nav-login">
+                        Logout
+                    </a>
+
+                {% elif session.get('user_id') %}
+
+                    <a href="{{ url_for('dashboard') }}">
+                        <i class="fa-solid fa-chart-pie"></i>
+                        Dashboard
+                    </a>
+
+                    <a href="{{ url_for('my_events') }}">
+                        <i class="fa-solid fa-ticket"></i>
+                        My Events
+                    </a>
+
+                    <a href="{{ url_for('logout') }}" class="nav-login">
+                        Logout
+                    </a>
+
+                {% else %}
+
+                    <a href="{{ url_for('login') }}">
+                        Login
+                    </a>
+
+                    <a href="{{ url_for('register') }}" class="nav-register">
+                        Get Started
+                    </a>
+
+                {% endif %}
+
+            </nav>
+        </div>
+    </header>
+
+
+    <!-- FLASH MESSAGES -->
+    <div class="flash-container">
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+
+            {% for category, message in messages %}
+
+                <div class="flash-message {{ category }}">
+
+                    {% if category == "success" %}
+                        <i class="fa-solid fa-circle-check"></i>
+                    {% elif category == "danger" %}
+                        <i class="fa-solid fa-circle-exclamation"></i>
+                    {% elif category == "warning" %}
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                    {% else %}
+                        <i class="fa-solid fa-circle-info"></i>
+                    {% endif %}
+
+                    <span>{{ message }}</span>
+
+                    <button onclick="this.parentElement.remove()">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+
+                </div>
+
+            {% endfor %}
+
+        {% endwith %}
+
+    </div>
+
+
+    <!-- PAGE CONTENT -->
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+
+
+    <!-- FOOTER -->
+    <footer class="footer">
+
+        <div class="footer-container">
+
+            <div class="footer-brand">
+
+                <a href="{{ url_for('index') }}" class="brand">
+                    <span class="brand-icon">
+                        <i class="fa-solid fa-sparkles"></i>
+                    </span>
+                    EVENTORA
+                </a>
+
+                <p>
+                    Discover experiences. Connect with people.
+                    Create unforgettable moments.
+                </p>
+
+            </div>
+
+            <div class="footer-links">
+
+                <a href="{{ url_for('events') }}">Events</a>
+
+                {% if session.get('role') != 'admin' %}
+
+                    {% if session.get('user_id') %}
+                        <a href="{{ url_for('my_events') }}">My Events</a>
+                    {% else %}
+                        <a href="{{ url_for('login') }}">Login</a>
+                    {% endif %}
+
+                {% endif %}
+
+                <a href="{{ url_for('index') }}">Home</a>
+
+            </div>
+
+        </div>
+
+        <div class="footer-bottom">
+            <p>
+                © 2026 Eventora. Online Event Registration System.
+            </p>
+        </div>
+
+    </footer>
+
+
+    <!-- JAVASCRIPT -->
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+</body>
+</html>

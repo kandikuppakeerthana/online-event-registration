@@ -1,0 +1,177 @@
+{% extends "base.html" %}
+
+{% block title %}My Events | EVENTORA{% endblock %}
+
+{% block content %}
+
+<section class="my-events-section">
+
+    <div class="container">
+
+        <div class="my-events-header">
+
+            <div>
+                <span class="eyebrow">YOUR ACTIVITY</span>
+
+                <h1>My Events</h1>
+
+                <p>
+                    Keep track of the events you have registered for.
+                </p>
+            </div>
+
+            <a href="{{ url_for('events') }}" class="btn btn-primary">
+                <i class="fa-solid fa-plus"></i>
+                Discover Events
+            </a>
+
+        </div>
+
+
+        {% if registrations %}
+
+        <div class="my-events-list">
+
+            {% for registration in registrations %}
+
+            <article class="my-event-card">
+
+                <div class="my-event-date">
+
+                    <i class="fa-regular fa-calendar-check"></i>
+
+                    <span>
+                        {{ registration["date"] }}
+                    </span>
+
+                </div>
+
+
+                <div class="my-event-content">
+
+                    <div class="my-event-title-row">
+
+                        <div>
+
+                            <span class="my-event-category">
+                                {{ registration["category"] }}
+                            </span>
+
+                            <h3>
+                                {{ registration["title"] }}
+                            </h3>
+
+                        </div>
+
+
+                        {% if registration["status"] == "Registered" %}
+
+                        <span class="status-badge status-registered">
+                            <i class="fa-solid fa-circle-check"></i>
+                            Registered
+                        </span>
+
+                        {% else %}
+
+                        <span class="status-badge status-cancelled">
+                            <i class="fa-solid fa-circle-xmark"></i>
+                            Cancelled
+                        </span>
+
+                        {% endif %}
+
+                    </div>
+
+
+                    <div class="my-event-meta">
+
+                        <span>
+                            <i class="fa-regular fa-clock"></i>
+                            {{ registration["time"] }}
+                        </span>
+
+                        <span>
+                            <i class="fa-solid fa-location-dot"></i>
+                            {{ registration["venue"] }}
+                        </span>
+
+                        <span>
+                            <i class="fa-solid fa-calendar-plus"></i>
+                            Registered on {{ registration["registration_date"] }}
+                        </span>
+
+                    </div>
+
+
+                    {% if registration["status"] == "Registered" %}
+
+                    <div class="my-event-actions">
+
+                        <a
+                            href="{{ url_for('event_details', event_id=registration['event_id']) }}"
+                            class="btn btn-outline btn-small"
+                        >
+                            View Event
+                        </a>
+
+
+                        <form
+                            action="{{ url_for('cancel_registration', registration_id=registration['id']) }}"
+                            method="POST"
+                            onsubmit="return confirm('Are you sure you want to cancel this registration?');"
+                        >
+
+                            <button
+                                type="submit"
+                                class="cancel-btn"
+                            >
+                                <i class="fa-solid fa-xmark"></i>
+                                Cancel Registration
+                            </button>
+
+                        </form>
+
+                    </div>
+
+                    {% endif %}
+
+                </div>
+
+            </article>
+
+            {% endfor %}
+
+        </div>
+
+        {% else %}
+
+        <div class="empty-state my-events-empty">
+
+            <div class="empty-icon">
+                <i class="fa-regular fa-calendar"></i>
+            </div>
+
+            <h3>No registered events yet</h3>
+
+            <p>
+                You haven't registered for any events.
+                Explore upcoming events and reserve your spot.
+            </p>
+
+            <a
+                href="{{ url_for('events') }}"
+                class="btn btn-primary"
+            >
+                Explore Events
+                <i class="fa-solid fa-arrow-right"></i>
+            </a>
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+</section>
+
+{% endblock %}

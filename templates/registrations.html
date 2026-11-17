@@ -1,0 +1,181 @@
+{% extends "base.html" %}
+
+{% block title %}Registrations | EVENTORA{% endblock %}
+
+{% block content %}
+
+<section class="admin-form-section">
+
+    <div class="container">
+
+        <!-- Header -->
+        <div class="form-page-header">
+
+            <a href="{{ url_for('admin') }}" class="back-link">
+                <i class="fa-solid fa-arrow-left"></i>
+                Back to Admin Dashboard
+            </a>
+
+            <span class="eyebrow">REGISTRATION MANAGEMENT</span>
+
+            <h1>Event Registrations</h1>
+
+            <p>
+                View users who have registered for events on EVENTORA.
+            </p>
+
+        </div>
+
+
+        <!-- Registration Card -->
+        <div class="registrations-card">
+
+            <div class="registrations-header">
+
+                <div>
+                    <h2>All Registrations</h2>
+                    <p>
+                        {{ registrations|length }} registration(s) found
+                    </p>
+                </div>
+
+                <div class="registration-icon">
+                    <i class="fa-solid fa-users"></i>
+                </div>
+
+            </div>
+
+
+            {% if registrations %}
+
+            <div class="registration-table-wrapper">
+
+                <table class="registration-table">
+
+                    <thead>
+                        <tr>
+                            <th>User</th>
+                            <th>Email</th>
+                            <th>Event</th>
+                            <th>Date</th>
+                            <th>Registration Date</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        {% for registration in registrations %}
+
+                        <tr>
+
+                            <td>
+                                <div class="user-cell">
+                                    <div class="user-avatar">
+                                        {{ registration['name'][0]|upper }}
+                                    </div>
+
+                                    <strong>
+                                        {{ registration['name'] }}
+                                    </strong>
+                                </div>
+                            </td>
+
+
+                            <td>
+                                <span class="email-text">
+                                    {{ registration['email'] }}
+                                </span>
+                            </td>
+
+
+                            <td>
+                                <div class="event-cell">
+
+                                    <strong>
+                                        {{ registration['title'] }}
+                                    </strong>
+
+                                    <span>
+                                        {{ registration['category'] }}
+                                    </span>
+
+                                </div>
+                            </td>
+
+
+                            <td>
+                                <span class="date-text">
+                                    {{ registration['date'] }}
+                                </span>
+                            </td>
+
+
+                            <td>
+                                <span class="date-text">
+                                    {{ registration['registration_date'] }}
+                                </span>
+                            </td>
+
+
+                            <td>
+
+                                {% if registration['status'] == 'Registered' %}
+
+                                    <span class="status-badge status-registered">
+                                        <i class="fa-solid fa-circle-check"></i>
+                                        Registered
+                                    </span>
+
+                                {% else %}
+
+                                    <span class="status-badge status-cancelled">
+                                        <i class="fa-solid fa-circle-xmark"></i>
+                                        Cancelled
+                                    </span>
+
+                                {% endif %}
+
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+            {% else %}
+
+            <!-- Empty State -->
+
+            <div class="empty-registrations">
+
+                <div class="empty-registration-icon">
+                    <i class="fa-solid fa-calendar-xmark"></i>
+                </div>
+
+                <h3>No Registrations Yet</h3>
+
+                <p>
+                    No users have registered for any events yet.
+                </p>
+
+                <a href="{{ url_for('admin') }}" class="btn btn-primary">
+                    Back to Dashboard
+                </a>
+
+            </div>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}

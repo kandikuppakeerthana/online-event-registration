@@ -1,0 +1,181 @@
+{% extends "base.html" %}
+
+{% block title %}{{ event["title"] }} | EVENTORA{% endblock %}
+
+{% block content %}
+
+<section class="event-details-section">
+
+    <div class="container">
+
+        <a href="{{ url_for('events') }}" class="back-link">
+            <i class="fa-solid fa-arrow-left"></i>
+            Back to Events
+        </a>
+
+        <div class="event-details-layout">
+
+            <!-- Main Event Information -->
+            <div class="event-details-main">
+
+                <div class="details-category">
+                    <i class="fa-solid fa-layer-group"></i>
+                    {{ event["category"] }}
+                </div>
+
+                <h1>{{ event["title"] }}</h1>
+
+                <p class="details-description">
+                    {{ event["description"] }}
+                </p>
+
+                <div class="details-info-grid">
+
+                    <div class="detail-info-card">
+                        <div class="detail-icon">
+                            <i class="fa-regular fa-calendar"></i>
+                        </div>
+
+                        <div>
+                            <span>Date</span>
+                            <strong>{{ event["date"] }}</strong>
+                        </div>
+                    </div>
+
+                    <div class="detail-info-card">
+                        <div class="detail-icon">
+                            <i class="fa-regular fa-clock"></i>
+                        </div>
+
+                        <div>
+                            <span>Time</span>
+                            <strong>{{ event["time"] }}</strong>
+                        </div>
+                    </div>
+
+                    <div class="detail-info-card">
+                        <div class="detail-icon">
+                            <i class="fa-solid fa-location-dot"></i>
+                        </div>
+
+                        <div>
+                            <span>Venue</span>
+                            <strong>{{ event["venue"] }}</strong>
+                        </div>
+                    </div>
+
+                    <div class="detail-info-card">
+                        <div class="detail-icon">
+                            <i class="fa-solid fa-users"></i>
+                        </div>
+
+                        <div>
+                            <span>Total Capacity</span>
+                            <strong>{{ event["capacity"] }}</strong>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- Registration Card -->
+            <aside class="registration-card">
+
+                <div class="registration-card-header">
+
+                    <span>EVENT REGISTRATION</span>
+
+                    <div class="available-seats">
+                        <i class="fa-solid fa-chair"></i>
+
+                        {{ event["available_seats"] }}
+                        seats available
+                    </div>
+
+                </div>
+
+                <h3>Ready to join?</h3>
+
+                <p>
+                    Reserve your place now and be part of this
+                    exciting experience.
+                </p>
+
+                {% if session.get("role") == "admin" %}
+
+                    <div class="secure-note">
+                        <i class="fa-solid fa-user-shield"></i>
+                        Admins can manage events from the admin dashboard.
+                    </div>
+
+                {% elif event["available_seats"] > 0 %}
+
+                    {% if session.get("user_id") %}
+
+                        <form
+                            action="{{ url_for('register_event', event_id=event['id']) }}"
+                            method="POST"
+                        >
+
+                            <button type="submit"
+                                    class="btn btn-primary register-event-btn">
+
+                                <i class="fa-solid fa-ticket"></i>
+                                Register for Event
+
+                            </button>
+
+                        </form>
+
+                        <div class="secure-note">
+                            <i class="fa-solid fa-shield-halved"></i>
+                            Your registration is securely recorded.
+                        </div>
+
+                    {% else %}
+
+                        <a
+                            href="{{ url_for('login') }}"
+                            class="btn btn-primary register-event-btn"
+                        >
+
+                            <i class="fa-solid fa-right-to-bracket"></i>
+                            Login to Register
+
+                        </a>
+
+                        <p class="login-note">
+                            Don't have an account?
+                            <a href="{{ url_for('register') }}">
+                                Create one
+                            </a>
+                        </p>
+
+                    {% endif %}
+
+                {% else %}
+
+                    <button
+                        class="btn btn-disabled register-event-btn"
+                        disabled
+                    >
+                        <i class="fa-solid fa-ban"></i>
+                        Event Full
+                    </button>
+
+                    <p class="login-note">
+                        No seats are currently available for this event.
+                    </p>
+
+                {% endif %}
+
+            </aside>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}
